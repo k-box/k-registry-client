@@ -24,11 +24,6 @@ class HttpClientConfigurator
     private $endpoint;
 
     /**
-     * @var string
-     */
-    private $token;
-
-    /**
      * @var HttpClient
      */
     private $httpClient;
@@ -69,10 +64,6 @@ class HttpClientConfigurator
             throw new \InvalidArgumentException('Unable to configure the client, no API Endpoint provided');
         }
 
-        if ($this->token === null) {
-            throw new \InvalidArgumentException('Unable to configure the client, no Token provided');
-        }
-
         return $this->httpClient;
     }
 
@@ -85,19 +76,6 @@ class HttpClientConfigurator
     public function setEndpoint(string $endpoint): HttpClientConfigurator
     {
         $this->endpoint = $endpoint;
-
-        return $this;
-    }
-
-    /**
-     * setToken changes the token used for request authentication
-     *
-     * @param string $token
-     * @return HttpClientConfigurator
-     */
-    public function setToken(string $token): HttpClientConfigurator
-    {
-        $this->token = $token;
 
         return $this;
     }

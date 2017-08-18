@@ -11,7 +11,6 @@ as a composer package.
 <?php
 
 $endpoint = "https://k-registry.url/"; // path gets added automatically
-$token = "28ao10andoszwvc"; // access token issued by registry
 
 $configurator = (new HttpClientConfigurator())
     ->setEndpoint($endpoint);
