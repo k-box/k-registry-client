@@ -13,6 +13,9 @@ use oneofftech\KRegistryClient\Exception\HydrationException;
 use oneofftech\KRegistryClient\Model\CreatableFromArray;
 use Psr\Http\Message\ResponseInterface;
 
+/*
+ * A ModelHydrator builds a model from a JSON body
+ */
 class ModelHydrator implements Hydrator
 {
     public function hydrate(ResponseInterface $response, string $class)

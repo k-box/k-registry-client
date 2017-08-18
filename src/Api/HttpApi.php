@@ -27,8 +27,17 @@ abstract class HttpApi
      */
     protected $messageFactory;
 
+    /*
+     * @var Hydrator
+     */
     protected $hydrator;
 
+    /**
+     * HttpApi constructor.
+     * @param HttpClient $httpClient
+     * @param MessageFactory $messageFactory
+     * @param Hydrator|null $hydrator
+     */
     public function __construct(
         HttpClient $httpClient,
         MessageFactory $messageFactory,
@@ -39,6 +48,12 @@ abstract class HttpApi
         $this->hydrator = $hydrator ?: new ModelHydrator();
     }
 
+    /**
+     * Creates a json encoded request body from the supplied parameters.
+     *
+     * @param array $params
+     * @return null|string
+     */
     private function createJsonBody(array $params) {
         if (count($params) === 0) {
             return null
@@ -47,12 +62,27 @@ abstract class HttpApi
         return json_encode($params, empty($params) ? JSON_FORCE_OBJECT : 0);
     }
 
+    /**
+     * Builds the path in the format of '?key1=value1&key2=value2' from the supplied
+     * parameters, returns null if empty.
+     *
+     * @param array $params
+     * @return string
+     */
     private function buildPathFromParams(array $params) {
         if (count($params) > 0) {
             return '?'.http_build_query($params);
         }
     }
 
+    /**
+     * Send a GET request with the parameters
+     *
+     * @param string $path
+     * @param array $params
+     * @param array $requestHeaders
+     * @return ResponseInterface
+     */
     protected function httpGet(
         string $path,
         array $params = [],
@@ -65,6 +95,14 @@ abstract class HttpApi
         );
     }
 
+    /**
+     * Send a POST request with a raw body
+     *
+     * @param string $path
+     * @param string $body
+     * @param array $requestHeaders
+     * @return ResponseInterface
+     */
     protected function httpPostRaw(
         string $path,
         string $body,
@@ -75,6 +113,15 @@ abstract class HttpApi
         );
     }
 
+    /**
+     * Send a POST request with a JSON-encoded body
+     *
+     * @param string $path
+     * @param array $params
+     * @param array $pathParams
+     * @param array $requestHeaders
+     * @return ResponseInterface
+     */
     protected function httpPost(
         string $path,
         array $params = [],

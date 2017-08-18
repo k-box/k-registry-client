@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace oneofftech\KRegistryClient\Model;
 
 
+/*
+ * Error is the Error Response of the API
+ */
 final class Error extends Model
 {
    public function getStatusCode(): string

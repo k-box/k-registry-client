@@ -18,16 +18,37 @@ use Http\Message\UriFactory;
 
 class HttpClientConfigurator
 {
+    /**
+     * @var string
+     */
     private $endpoint;
 
+    /**
+     * @var string
+     */
     private $token;
 
+    /**
+     * @var HttpClient
+     */
     private $httpClient;
 
+    /**
+     * @var UriFactory
+     */
     private $uriFactory;
 
+    /**
+     * @var \Http\Message\MessageFactory|RequestFactory
+     */
     private $requestFactory;
 
+    /**
+     * HttpClientConfigurator constructor.
+     * @param HttpClient|null $httpClient
+     * @param UriFactory|null $uriFactory
+     * @param RequestFactory|null $requestFactory
+     */
     public function __construct(
         HttpClient $httpClient = null,
         UriFactory $uriFactory = null,
@@ -38,6 +59,10 @@ class HttpClientConfigurator
         $this->requestFactory = $requestFactory ?? MessageFactoryDiscovery::find();
     }
 
+    /**
+     * Creates a usable client from the API configuration
+     * @return HttpClient
+     */
     public function createConfiguredClient(): HttpClient
     {
         if (empty($this->endpoint)) {
@@ -51,6 +76,12 @@ class HttpClientConfigurator
         return $this->httpClient;
     }
 
+    /**
+     * setEndpoint changes the endpoint used for requests
+     *
+     * @param string $endpoint
+     * @return HttpClientConfigurator
+     */
     public function setEndpoint(string $endpoint): HttpClientConfigurator
     {
         $this->endpoint = $endpoint;
@@ -58,6 +89,12 @@ class HttpClientConfigurator
         return $this;
     }
 
+    /**
+     * setToken changes the token used for request authentication
+     *
+     * @param string $token
+     * @return HttpClientConfigurator
+     */
     public function setToken(string $token): HttpClientConfigurator
     {
         $this->token = $token;
