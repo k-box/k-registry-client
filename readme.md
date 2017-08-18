@@ -22,10 +22,13 @@ $apiClient = ApiClient::configure($configurator);
 $appUri = "https://website.net/search/"; // will be the identifier of the
 // remote application
 
+$token = "jfba72hpevc8/z&"; // the authentication token supplied by the
+// remote application
+
 $permissions = array();
 $permissions[] = "data-search"; // can the client search?
 
-$apiClient->access()->check($appUri, $permissions)
+$apiClient->access()->check($appUri, $token, $permissions)
 ```
 
 The current permissions that can be queried are:
