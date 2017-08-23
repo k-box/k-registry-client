@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: developer
- * Date: 8/18/17
- * Time: 9:00 AM
- */
 
 namespace oneofftech\KRegistryClient\Api;
 

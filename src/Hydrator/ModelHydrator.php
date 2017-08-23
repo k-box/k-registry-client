@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: developer
- * Date: 8/18/17
- * Time: 4:56 AM
- */
 
 namespace oneofftech\KRegistryClient\Hydrator;
 

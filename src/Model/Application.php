@@ -2,7 +2,12 @@
 
 namespace oneofftech\KRegistryClient\Model;
 
-
+/**
+ * Application is information returned by the registry on success
+ *
+ * Class Application
+ * @package oneofftech\KRegistryClient\Model
+ */
 class Application extends Model
 {
 

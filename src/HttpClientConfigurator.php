@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: developer
- * Date: 8/18/17
- * Time: 5:20 AM
- */
 
 namespace oneofftech\KRegistryClient;
 
@@ -79,5 +73,4 @@ class HttpClientConfigurator
 
         return $this;
     }
-
 }
