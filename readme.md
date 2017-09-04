@@ -10,7 +10,7 @@ as a composer package.
 ```php
 <?php
 
-$endpoint = "https://k-registry.url/"; // path gets added automatically
+$endpoint = "https://test.klink.asia/registry/"; // path gets added automatically
 
 $configurator = (new HttpClientConfigurator())
     ->setEndpoint($endpoint);
