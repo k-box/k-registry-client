@@ -1,6 +1,6 @@
 <?php
 
-namespace oneofftech\KRegistryClient\Exception;
+namespace OneOffTech\KRegistryClient\Exception;
 
 
 /*

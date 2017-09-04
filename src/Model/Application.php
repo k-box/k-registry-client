@@ -1,12 +1,12 @@
 <?php
 
-namespace oneofftech\KRegistryClient\Model;
+namespace OneOffTech\KRegistryClient\Model;
 
 /**
  * Application is information returned by the registry on success
  *
  * Class Application
- * @package oneofftech\KRegistryClient\Model
+ * @package OneOffTech\KRegistryClient\Model
  */
 class Application extends Model
 {

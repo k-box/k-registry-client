@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace oneofftech\KRegistryClient\Model;
+namespace OneOffTech\KRegistryClient\Model;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>

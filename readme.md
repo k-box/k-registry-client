@@ -1,38 +1,20 @@
-# K-Registry-Client
+# K Registry client
 
-The K-Registry-Client is a PHP client for the K-Registry Endpoint.
-
-## installation
-the client has not been packaged with composer yet, but will be available
-as a composer package.
-
-## Usage
 ```php
 <?php
 
-$endpoint = "https://k-registry.url/"; // path gets added automatically
+$client = new KRegistryClient();
 
-$configurator = (new HttpClientConfigurator())
-    ->setEndpoint($endpoint);
-$apiClient = ApiClient::configure($configurator);
+$endpoint = "https://test.klink.asia/kregistry/";
+$client->setEndpoint($endpoint);
 
-// $apiClient will now be ready to query the registry
+$application = client->application("token");
 
-$appUri = "https://website.net/search/"; // will be the identifier of the
-// remote application
+if ($application->hasPermission("data-search")) {
+    // ...
+}
 
-$token = "jfba72hpevc8/z&"; // the authentication token supplied by the
-// remote application
-
-$permissions = array();
-$permissions[] = "data-search"; // can the client search?
-
-$apiClient->access()->check($appUri, $token, $permissions)
+if ($application->hasPermission("data-add")) {
+    // ...
+}
 ```
-
-The current permissions that can be queried are:
-- `data-search` - is the application allowed to search?
-- `data-add` - can the application add files to the index?
-- `data-delete-own` - can the application delete own indexed files?
-- `data-delete-all` - can the application delete everything?
-
