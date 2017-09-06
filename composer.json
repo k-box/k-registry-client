@@ -4,6 +4,8 @@
   "description": "Client library for kregistry API",
   "keywords": ["oneofftech", "k-search", "k-registry"],
   "license": "AGPL",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": ">=7.0",
     "php-http/httplug": "^1.0",
@@ -19,7 +21,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Oneofftech\\KRegistry-Client": "src/"
+      "Oneofftech\\KRegistryClient\\": "src/"
     }
   }
 }
