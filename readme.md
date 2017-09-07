@@ -8,8 +8,8 @@ $client = new OneOffTech\KLinkRegistryClient\RegistryClient();
 $endpoint = "https://test.klink.asia/kregistry/";
 $client->setEndpoint($endpoint);
 
-// $api will contain the application API
-$api = $client->application();
+// $api will contain the access API
+$api = $client->access();
 
 // quick permission check
 if ($api->hasPermission($appToken, $appUrl, ["data-search"])) {

@@ -7,7 +7,7 @@ use Http\Message\MessageFactory;
 use Http\Message\RequestFactory;
 use OneOffTech\KLinkRegistryClient\Hydrator\Hydrator;
 use OneOffTech\KLinkRegistryClient\Hydrator\ModelHydrator;
-use OneOffTech\KLinkRegistryClient\Api\ApplicationsApi;
+use OneOffTech\KLinkRegistryClient\Api\AccessApi;
 
 class KRegistryClient {
     private $httpClient;
@@ -22,6 +22,12 @@ class KRegistryClient {
      */
     private $messageFactory;
 
+    /**
+     * KRegistryClient constructor.
+     * @param HttpClient|null $httpClient
+     * @param MessageFactory|null $messageFactory
+     * @param Hydrator|null $hydrator
+     */
     public function __construct(
         HttpClient $httpClient=null,
         MessageFactory $messageFactory=null,
@@ -32,10 +38,10 @@ class KRegistryClient {
         $this->hydrator = $hydrator ?: new ModelHydrator();
     }
 
-    public function application(): ApplicationsApi
+    public function access(): AccessApi
     {
-        $application = new Api\Applications($this->httpClient, $this->messageFactory, $this->hydrator);
+        $access = new AccessApi($this->httpClient, $this->messageFactory, $this->hydrator);
 
-        return $application;
+        return $access;
     }
 }
