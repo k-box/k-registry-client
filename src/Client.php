@@ -32,10 +32,9 @@ class KRegistryClient {
         $this->hydrator = $hydrator ?: new ModelHydrator();
     }
 
-    public function application(string $token): ApplicationsApi
+    public function application(): ApplicationsApi
     {
         $application = new Api\Applications($this->httpClient, $this->messageFactory, $this->hydrator);
-        $application->setToken($token);
 
         return $application;
     }

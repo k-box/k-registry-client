@@ -9,12 +9,12 @@ use Psr\Http\Message\ResponseInterface;
 final class AccessApi extends HttpApi
 {
     /**
+     * @param string $token
      * @param string $appUrl
      * @param array $permissions
-     * @param string $token
      * @return Application
      */
-    public function getApplication(string $appUrl, array $permissions, string $token) {
+    public function getApplication(string $token, string $appUrl, array $permissions) {
         if (empty($appUrl) || empty($token)) {
             throw new InvalidArgumentException(
                 'Application URL or Token cannot be empty.'
@@ -40,10 +40,17 @@ final class AccessApi extends HttpApi
      * @param string $token
      * @return bool
      */
-    public function hasPermissions(string $appUrl, array $permissions, string $token) {
-        $appInfo = $this->getApplication($appUrl, $permissions, $token);
+    public function hasPermissions(string $token, string $appUrl, array $permissions) {
+        $appInfo = $this->getApplication($token, $appUrl, $permissions);
 
         // TODO: Implement logic
+        return false;
+    }
+
+    private function arrayIsSubset(array $array1, array $array2) {
+        if (array_intersect($array1, $array2) == $array1) {
+            return true;
+        }
         return false;
     }
 
