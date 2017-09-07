@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OneOffTech\KRegistryClient\Model;
+namespace OneOffTech\KLinkRegistryClient\Model;
 
 
 /*

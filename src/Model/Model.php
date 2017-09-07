@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OneOffTech\KRegistryClient\Model;
+namespace OneOffTech\KLinkRegistryClient\Model;
 
 /*
  * A base model that is extended by all other models
@@ -22,7 +22,7 @@ abstract class Model implements creatableFromArray
      */
     protected function __construct(array $data)
     {
-        $this->data = $data
+        $this->data = $data;
     }
 
     /**

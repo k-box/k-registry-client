@@ -1,12 +1,12 @@
 <?php
 
-namespace OneOffTech\KRegistryClient\Tests;
-use OneOffTech\KRegistryClient\Api\AccessApi;
+namespace OneOffTech\KLinkRegistryClient\Tests;
+use OneOffTech\KLinkRegistryClient\Api\AccessApi;
 
 
 /**
  * Class ApplicationsTest
- * @covers \OneOffTech\KRegistryClient\Api\AccessApi
+ * @covers \OneOffTech\KLinkRegistryClient\Api\AccessApi
  */
 class AccessTest extends BaseApiTest
 {
@@ -25,8 +25,6 @@ class AccessTest extends BaseApiTest
 
     public function testAccessSuccess()
     {
-        $this->client->
     }
-
 
 }

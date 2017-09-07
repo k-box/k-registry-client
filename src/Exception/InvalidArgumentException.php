@@ -1,6 +1,6 @@
 <?php
 
-namespace OneOffTech\KRegistryClient\Exception;
+namespace OneOffTech\KLinkRegistryClient\Exception;
 
 
 /*

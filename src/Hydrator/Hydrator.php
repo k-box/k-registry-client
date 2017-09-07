@@ -1,6 +1,6 @@
 <?php
 
-namespace OneOffTech\KRegistryClient\Hydrator;
+namespace OneOffTech\KLinkRegistryClient\Hydrator;
 
 
 use Psr\Http\Message\ResponseInterface;

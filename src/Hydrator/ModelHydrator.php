@@ -1,10 +1,10 @@
 <?php
 
-namespace OneOffTech\KRegistryClient\Hydrator;
+namespace OneOffTech\KLinkRegistryClient\Hydrator;
 
 
-use OneOffTech\KRegistryClient\Exception\HydrationException;
-use OneOffTech\KRegistryClient\Model\CreatableFromArray;
+use OneOffTech\KLinkRegistryClient\Exception\HydrationException;
+use OneOffTech\KLinkRegistryClient\Model\CreatableFromArray;
 use Psr\Http\Message\ResponseInterface;
 
 /*

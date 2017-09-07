@@ -1,9 +1,9 @@
 <?php
 
-namespace OneOffTech\KRegistryClient\Api;
+namespace OneOffTech\KLinkRegistryClient\Api;
 
-use OneOffTech\KRegistryClient\Exception\InvalidArgumentException;
-use OneOffTech\KRegistryClient\Model\Application;
+use OneOffTech\KLinkRegistryClient\Exception\InvalidArgumentException;
+use OneOffTech\KLinkRegistryClient\Model\Application;
 use Psr\Http\Message\ResponseInterface;
 
 final class AccessApi extends HttpApi
@@ -41,9 +41,10 @@ final class AccessApi extends HttpApi
      * @return bool
      */
     public function hasPermissions(string $appUrl, array $permissions, string $token) {
-        $appInfo = this->getApplication($appUrl, $permissions, $token);
+        $appInfo = $this->getApplication($appUrl, $permissions, $token);
 
-        return false
+        // TODO: Implement logic
+        return false;
     }
 
 }

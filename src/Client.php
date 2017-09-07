@@ -5,9 +5,9 @@ use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
 use Http\Message\RequestFactory;
-use OneOffTech\KRegistryClient\Hydrator\Hydrator;
-use OneOffTech\KRegistryClient\Hydrator\ModelHydrator;
-use OneOffTech\KRegistryClient\Api\ApplicationsApi;
+use OneOffTech\KLinkRegistryClient\Hydrator\Hydrator;
+use OneOffTech\KLinkRegistryClient\Hydrator\ModelHydrator;
+use OneOffTech\KLinkRegistryClient\Api\ApplicationsApi;
 
 class KRegistryClient {
     private $httpClient;

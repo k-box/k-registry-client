@@ -1,6 +1,6 @@
 <?php
 
-namespace oneofftech\KRegistryClient\Api;
+namespace OneOffTech\KLinkRegistryClient\Api;
 
 
 use Http\Client\HttpClient;
@@ -50,7 +50,7 @@ abstract class HttpApi
      */
     private function createJsonBody(array $params) {
         if (count($params) === 0) {
-            return null
+            return null;
         }
 
         return json_encode($params, empty($params) ? JSON_FORCE_OBJECT : 0);

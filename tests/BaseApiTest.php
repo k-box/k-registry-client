@@ -1,9 +1,9 @@
 <?php
 
-namespace OneOffTech\KRegistryClient\Tests;
+namespace OneOffTech\KLinkRegistryClient\Tests;
 
 use Http\Message\StreamFactory\GuzzleStreamFactory;
-use OneOffTech\KRegistryClient\Hydrator\Hydrator;
+use OneOffTech\KLinkRegistryClient\Hydrator\Hydrator;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -49,7 +49,7 @@ class BaseApiTest extends TestCase
         $this->response->method('getStatusCode')
             ->willReturn($responseCode);
 
-        $bodyStream = (new GuzzleStreamFactory()->createStream($body));
+        $bodyStream = (new GuzzleStreamFactory())->createStream($body);
         $this->response->method('getBody')
             ->willReturn($bodyStream);
 
@@ -68,6 +68,6 @@ class BaseApiTest extends TestCase
         $this->hydrator
             ->expects($this->once())
             ->method('hydrate')
-            ->with($this->response, $class)
+            ->with($this->response, $class);
     }
 }
