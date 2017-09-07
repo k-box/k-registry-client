@@ -1,5 +1,5 @@
 {
-  "name": "OneOffTech/KRegistryClient",
+  "name": "oneofftech/k-link-registry-client",
   "type": "library",
   "description": "Client library for kregistry API",
   "keywords": ["oneofftech", "k-search", "k-registry"],
@@ -19,7 +19,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Oneofftech\\KRegistryClient\\": "src/"
+      "Oneofftech\\KLinkRegistryClient\\": "src/"
     }
   }
 }
