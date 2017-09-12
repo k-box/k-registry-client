@@ -8,6 +8,9 @@ use Psr\Http\Message\ResponseInterface;
 
 final class AccessApi extends HttpApi
 {
+
+    const ACCESS_ACTION = 'application/access';
+
     /**
      * @param string $token
      * @param string $appUrl
@@ -21,7 +24,7 @@ final class AccessApi extends HttpApi
             );
         }
 
-        $response = $this->httpPost('/application/access', [
+        $response = $this->httpPost($this->url(self::ACCESS_ACTION), [
             'app_url' => $appUrl,
             'permissions' => $permissions,
             'auth_token' => $token,

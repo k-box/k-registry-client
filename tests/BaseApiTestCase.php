@@ -1,16 +1,16 @@
 <?php
 
-namespace OneOffTech\KLinkRegistryClient\Tests;
+namespace Tests;
 
 use Http\Message\StreamFactory\GuzzleStreamFactory;
 use OneOffTech\KLinkRegistryClient\Hydrator\Hydrator;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Http\Client\HttpClient;
 use Http\Message\MessageFactory;
 
-class BaseApiTest extends TestCase
+
+class BaseApiTestCase extends TestCase
 {
 
     /** @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject */
@@ -30,20 +30,20 @@ class BaseApiTest extends TestCase
 
     public function setUp() {
         $this->response = $this->createMock(ResponseInterface::class);
-        $this->request = $this->createMock(RequestInterface::class);
+        // $this->request = $this->createMock(RequestInterface::class);
         $this->httpClient = $this->createMock(HttpClient::class);
-        $this->messageFactory = $this->createMock(MessageFactory::class);
-        $this->hydrator = $this->createMock(Hydrator::class);
+        // $this->messageFactory = $this->createMock(MessageFactory::class);
+        // $this->hydrator = $this->createMock(Hydrator::class);
     }
 
-    public function configureMessage(string $action, string $uri, array $headers=[], string $body=null)
-    {
-        $this->messageFactory
-            ->expects($this->once())
-            ->method('createRequest')
-            ->with($action, $uri, $headers, $body)
-            ->willReturn($this->request);
-    }
+    // public function configureMessage(string $action, string $uri, array $headers=[], string $body=null)
+    // {
+    //     $this->messageFactory
+    //         ->expects($this->once())
+    //         ->method('createRequest')
+    //         ->with($action, $uri, $headers, $body)
+    //         ->willReturn($this->request);
+    // }
 
     public function configureRequestAndResponse(int $responseCode, string $body='', array $headers=[], $contentType='application/json') {
         $this->response->method('getStatusCode')
@@ -54,7 +54,7 @@ class BaseApiTest extends TestCase
             ->willReturn($bodyStream);
 
         $this->response->method('getHeader')
-            ->willReturnMap($headersMap);
+            ->willReturnMap($headers);
 
         $this->response->method('getHeaderLine')
             ->with('Content-Type')
@@ -64,10 +64,10 @@ class BaseApiTest extends TestCase
             ->willReturn($this->response);
     }
 
-    public function configureHydrator($class) {
-        $this->hydrator
-            ->expects($this->once())
-            ->method('hydrate')
-            ->with($this->response, $class);
-    }
+    // public function configureHydrator($class) {
+    //     $this->hydrator
+    //         ->expects($this->once())
+    //         ->method('hydrate')
+    //         ->with($this->response, $class);
+    // }
 }

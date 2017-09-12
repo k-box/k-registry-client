@@ -7,7 +7,7 @@ namespace OneOffTech\KLinkRegistryClient\Model;
 /*
  * A base model that is extended by all other models
  */
-abstract class Model implements creatableFromArray
+abstract class Model implements CreatableFromArray
 {
     /**
      * Contains the information of the Model

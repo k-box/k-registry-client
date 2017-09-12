@@ -1,5 +1,7 @@
 <?php
 
+namespace OneOffTech\KLinkRegistryClient;
+
 use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
@@ -9,7 +11,10 @@ use OneOffTech\KLinkRegistryClient\Hydrator\Hydrator;
 use OneOffTech\KLinkRegistryClient\Hydrator\ModelHydrator;
 use OneOffTech\KLinkRegistryClient\Api\AccessApi;
 
-class KRegistryClient {
+class Client {
+
+    private $url = null;
+
     private $httpClient;
 
     /**
@@ -23,25 +28,25 @@ class KRegistryClient {
     private $messageFactory;
 
     /**
-     * KRegistryClient constructor.
-     * @param HttpClient|null $httpClient
-     * @param MessageFactory|null $messageFactory
-     * @param Hydrator|null $hydrator
+     * K-Registry Client constructor.
+     *
+     * @param string $url The URL of the K-Registry that will be used by this client
+     * @return OneOffTech\KLinkRegistryClient\Client;
      */
     public function __construct(
-        HttpClient $httpClient=null,
-        MessageFactory $messageFactory=null,
-        Hydrator $hydrator=null
+        string $url
     ) {
-        $this->httpClient = $httpClient ?: HttpClientDiscovery::find();
-        $this->messageFactory = $messageFactory ?: MessageFactoryDiscovery::find();
-        $this->hydrator = $hydrator ?: new ModelHydrator();
+        $this->url = $url;
+        $this->httpClient = HttpClientDiscovery::find();
+        $this->messageFactory = MessageFactoryDiscovery::find();
+        $this->hydrator = new ModelHydrator();
     }
 
     public function access(): AccessApi
     {
-        $access = new AccessApi($this->httpClient, $this->messageFactory, $this->hydrator);
+        $access = new AccessApi($this->url, $this->httpClient, $this->messageFactory, $this->hydrator);
 
         return $access;
     }
+    
 }

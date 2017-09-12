@@ -3,10 +3,11 @@
 ```php
 <?php
 
-$client = new OneOffTech\KLinkRegistryClient\RegistryClient();
+use OneOffTech\KLinkRegistryClient\Client;
 
-$endpoint = "https://test.klink.asia/kregistry/";
-$client->setEndpoint($endpoint);
+$registry_url = "https://test.klink.asia/kregistry/";
+
+$client = new Client($registry_url);
 
 // $api will contain the access API
 $api = $client->access();
