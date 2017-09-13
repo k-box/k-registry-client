@@ -1,7 +1,7 @@
 {
   "name": "oneofftech/k-link-registry-client",
   "type": "library",
-  "description": "Client library for kregistry API",
+  "description": "Client library for K-Registry API",
   "keywords": ["oneofftech", "k-search", "k-registry"],
   "license": "AGPL",
   "require": {
@@ -19,7 +19,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Oneofftech\\KLinkRegistryClient\\": "src/"
+      "OneOffTech\\KLinkRegistryClient\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+        "Tests\\": "tests/"
     }
   }
 }

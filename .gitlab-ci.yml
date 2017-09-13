@@ -1,0 +1,29 @@
+## Continuous Integration Jobs definition
+
+stages:
+  - test
+
+cache:
+  key: "k-registry-client-php"
+  paths:
+  - .composer-cache/
+
+unit_test_7.0:
+  stage: test
+  image: "docker.klink.asia/open/docker-php:7.0"
+  script:
+    - export COMPOSER_CACHE_DIR=`pwd`/.composer-cache
+    - composer install --prefer-dist
+    - vendor/bin/phpunit --exclude-group integration
+  tags:
+    - docker
+
+unit_test_7.1:
+  stage: test
+  image: "docker.klink.asia/open/docker-php:7.1"
+  script:
+    - export COMPOSER_CACHE_DIR=`pwd`/.composer-cache
+    - composer install --prefer-dist
+    - vendor/bin/phpunit --exclude-group integration
+  tags:
+    - docker
