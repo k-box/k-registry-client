@@ -71,16 +71,16 @@ class AccessApiTest extends BaseApiTestCase
             'application_id' => 1, 'registrant_id' => 1, 'name' => 'Test Application', 'app_domain' => 'http://localhost', 'permissions' => ['PERMISSION-1']
         ]));
 
-        $hasPermission = $this->client->getApplication('TOKEN', 'http://localhost', ['PERMISSION-1']);
+        $hasPermission = $this->client->hasPermissions('TOKEN', 'http://localhost', ['PERMISSION-1']);
 
         $this->assertTrue($hasPermission);
     }
 
     public function test_application_dont_have_permission()
     {
-        $this->configureRequestAndResponse(200, \json_encode(false));
+        $this->configureRequestAndResponse(400, \json_encode(false));
 
-        $hasPermission = $this->client->getApplication('TOKEN', 'http://localhost', ['PERMISSION-1']);
+        $hasPermission = $this->client->hasPermissions('TOKEN', 'http://localhost', ['PERMISSION-1']);
 
         $this->assertFalse($hasPermission);
     }
