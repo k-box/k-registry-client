@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use OneOffTech\KLinkRegistryClient\Model\Application;
 use OneOffTech\KLinkRegistryClient\Exception\InvalidArgumentException;
 use OneOffTech\KLinkRegistryClient\Exception\ApplicationVerificationException;
+use OneOffTech\KLinkRegistryClient\Exception\HydrationException;
 
 final class AccessApi extends HttpApi
 {
@@ -17,6 +18,8 @@ final class AccessApi extends HttpApi
      * @param string $appUrl
      * @param array $permissions
      * @return Application
+     * @throws OneOffTech\KLinkRegistryClient\Exception\InvalidArgumentException if $token or $appUrl are empty strings
+     * @throws OneOffTech\KLinkRegistryClient\Exception\ApplicationVerificationException if the application don't exists or the permissions are not supported by the application
      */
     public function getApplication(string $token, string $appUrl, array $permissions) {
         if (empty($appUrl) || empty($token)) {
@@ -34,8 +37,15 @@ final class AccessApi extends HttpApi
         if ($response->getStatusCode() !== 200) {
             throw new ApplicationVerificationException('Application cannot be verified. Please check token and permissions');
         }
+        
+        try
+        {
+            return $this->hydrator->hydrate($response, Application::class);
+        }
+        catch(HydrationException $ex){
+            throw new ApplicationVerificationException('Application cannot be verified. Unexpected response from the server.');
+        }
 
-        return $this->hydrator->hydrate($response, Application::class);
     }
 
     /**

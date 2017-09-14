@@ -42,9 +42,16 @@ class AccessApiIntegrationTest extends TestCase
 
     public function test_application_has_permission()
     {
-        $hasPermission = $this->client->getApplication($this->appToken, $this->appUrl, $this->appPermissions);
+        $hasPermission = $this->client->hasPermissions($this->appToken, $this->appUrl, $this->appPermissions);
 
         $this->assertTrue($hasPermission);
+    }
+    
+    public function test_application_dont_have_permission()
+    {
+        $hasPermission = $this->client->hasPermissions($this->appToken, $this->appUrl, ['something-that-is-unlikely-to-exists']);
+
+        $this->assertFalse($hasPermission);
     }
 
 }
