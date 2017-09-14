@@ -24,6 +24,10 @@ class ModelHydrator implements Hydrator
         if (JSON_ERROR_NONE !== json_last_error()) {
             throw new HydrationException('Error when trying to decode response');
         }
+        
+        if($data === false){
+            throw new HydrationException('Unexpected response, no application object found');
+        }
 
         if (is_subclass_of($class, CreatableFromArray::class)) {
             $object = call_user_func($class.'::createFromArray', $data);
