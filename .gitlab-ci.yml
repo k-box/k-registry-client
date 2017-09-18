@@ -10,7 +10,7 @@ cache:
 
 unit_test_7.0:
   stage: test
-  image: "docker.klink.asia/open/docker-php:7.0"
+  image: "docker.klink.asia/main/docker-php:7.0"
   script:
     - export COMPOSER_CACHE_DIR=`pwd`/.composer-cache
     - composer install --prefer-dist
@@ -20,7 +20,7 @@ unit_test_7.0:
 
 unit_test_7.1:
   stage: test
-  image: "docker.klink.asia/open/docker-php:7.1"
+  image: "docker.klink.asia/main/docker-php:7.1"
   script:
     - export COMPOSER_CACHE_DIR=`pwd`/.composer-cache
     - composer install --prefer-dist
