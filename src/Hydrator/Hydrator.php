@@ -2,7 +2,6 @@
 
 namespace OneOffTech\KLinkRegistryClient\Hydrator;
 
-
 use Psr\Http\Message\ResponseInterface;
 
 interface Hydrator

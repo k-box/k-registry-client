@@ -2,17 +2,15 @@
 
 namespace OneOffTech\KLinkRegistryClient;
 
-use Http\Client\HttpClient;
 use Http\Discovery\HttpClientDiscovery;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
-use Http\Message\RequestFactory;
+use OneOffTech\KLinkRegistryClient\Api\AccessApi;
 use OneOffTech\KLinkRegistryClient\Hydrator\Hydrator;
 use OneOffTech\KLinkRegistryClient\Hydrator\ModelHydrator;
-use OneOffTech\KLinkRegistryClient\Api\AccessApi;
 
-class Client {
-
+class Client
+{
     private $url = null;
 
     private $httpClient;
@@ -23,7 +21,7 @@ class Client {
     private $hydrator;
 
     /**
-     * @var RequestFactory
+     * @var MessageFactory
      */
     private $messageFactory;
 
@@ -31,6 +29,7 @@ class Client {
      * K-Registry Client constructor.
      *
      * @param string $url The URL of the K-Registry that will be used by this client
+     *
      * @return OneOffTech\KLinkRegistryClient\Client;
      */
     public function __construct(
@@ -48,5 +47,4 @@ class Client {
 
         return $access;
     }
-    
 }

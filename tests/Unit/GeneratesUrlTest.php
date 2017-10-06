@@ -2,10 +2,12 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use OneOffTech\KLinkRegistryClient\Client;
 use OneOffTech\KLinkRegistryClient\Api\Concerns\GeneratesUrl;
+use Tests\TestCase;
 
+/**
+ * @coversNothing
+ */
 class GeneratesUrlTest extends TestCase
 {
     use GeneratesUrl;
@@ -16,20 +18,19 @@ class GeneratesUrlTest extends TestCase
         $expectedBaseUrl = 'http://localhost';
         $returnValue = $this->setBaseUrl($baseUrl);
 
-        $this->assertInstanceOf(GeneratesUrlTest::class, $returnValue);
+        $this->assertInstanceOf(self::class, $returnValue);
         $this->assertNotNull($this->url);
-        $this->assertEquals($expectedBaseUrl, $this->url);
+        $this->assertSame($expectedBaseUrl, $this->url);
     }
 
     public function test_url_construction()
     {
         $baseUrl = 'http://localhost';
-        $action = 'application/access/';
-        $expectedUrl = 'http://localhost/application/access/';
+        $action = 'application.authenticate';
+        $expectedUrl = 'http://localhost/api/1.0/application.authenticate';
         $returnValue = $this->setBaseUrl($baseUrl)->url($action);
 
         $this->assertNotNull($returnValue);
-        $this->assertEquals($expectedUrl, $returnValue);
+        $this->assertSame($expectedUrl, $returnValue);
     }
-    
 }

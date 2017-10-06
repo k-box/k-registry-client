@@ -2,13 +2,15 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use OneOffTech\KLinkRegistryClient\Client;
 use OneOffTech\KLinkRegistryClient\Api\AccessApi;
+use OneOffTech\KLinkRegistryClient\Client;
+use Tests\TestCase;
 
+/**
+ * @coversNothing
+ */
 class ClientTest extends TestCase
 {
-
     public function test_client_can_be_instantiated()
     {
         $client = new Client(getenv('REGISTRY_URL'));
@@ -16,5 +18,4 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Client::class, $client);
         $this->assertInstanceOf(AccessApi::class, $client->access());
     }
-    
 }
