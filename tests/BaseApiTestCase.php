@@ -2,17 +2,18 @@
 
 namespace Tests;
 
+use Http\Client\HttpClient;
+use Http\Message\MessageFactory;
 use Http\Message\StreamFactory\GuzzleStreamFactory;
 use OneOffTech\KLinkRegistryClient\Hydrator\Hydrator;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Http\Client\HttpClient;
-use Http\Message\MessageFactory;
 
-
+/**
+ * @coversNothing
+ */
 class BaseApiTestCase extends TestCase
 {
-
     /** @var ResponseInterface|\PHPUnit_Framework_MockObject_MockObject */
     protected $response;
 
@@ -25,10 +26,11 @@ class BaseApiTestCase extends TestCase
     /** @var MessageFactory|\PHPUnit_Framework_MockObject_MockObject */
     protected $messageFactory;
 
-    /** @var  Hydrator|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var Hydrator|\PHPUnit_Framework_MockObject_MockObject */
     protected $hydrator;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->response = $this->createMock(ResponseInterface::class);
         // $this->request = $this->createMock(RequestInterface::class);
         $this->httpClient = $this->createMock(HttpClient::class);
@@ -45,7 +47,8 @@ class BaseApiTestCase extends TestCase
     //         ->willReturn($this->request);
     // }
 
-    public function configureRequestAndResponse(int $responseCode, string $body='', array $headers=[], $contentType='application/json') {
+    public function configureRequestAndResponse(int $responseCode, string $body = '', array $headers = [], $contentType = 'application/json')
+    {
         $this->response->method('getStatusCode')
             ->willReturn($responseCode);
 

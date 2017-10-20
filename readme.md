@@ -33,7 +33,6 @@ composer require oneofftech/k-link-registry-client
 
 ## Usage example
 
-
 ```php
 <?php
 
@@ -50,8 +49,20 @@ if ($accessApi->hasPermission($appToken, $appUrl, ["data-search"])) {
 }
 
 // Verify that the application exists and grab the application details.
-$app = $accessApi->getApplication($appToken, $appUrl, ["data-delete-own"]);
+// empty permission array means that we want to fetch the application,
+// regardless of the permissions.
+$app = $accessApi->getApplication($appToken, $appUrl, []);
+
+// now we can check on permissions of the application object:
+if ($app->hasPermission("data-add")) {
+    // ... ;
+}
+
+if ($app->hasPermission("data-search")) {
+    // ... ;
+}
+
+// or we can get individual properties:
 
 var_dump($app->getName());
-// ...
 ```

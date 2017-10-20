@@ -2,7 +2,6 @@
 
 namespace OneOffTech\KLinkRegistryClient\Exception;
 
-
 /*
  * InvalidArgumentException is an exception thrown by the Backend
  */

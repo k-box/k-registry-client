@@ -10,7 +10,7 @@ namespace OneOffTech\KLinkRegistryClient\Model;
 abstract class Model implements CreatableFromArray
 {
     /**
-     * Contains the information of the Model
+     * Contains the information of the Model.
      *
      * @var array
      */
@@ -18,6 +18,7 @@ abstract class Model implements CreatableFromArray
 
     /**
      * Model constructor.
+     *
      * @param array $data
      */
     protected function __construct(array $data)
@@ -28,7 +29,8 @@ abstract class Model implements CreatableFromArray
     /**
      * {@inheritdoc}
      */
-    public static function createFromArray(array $data) {
+    public static function createFromArray(array $data)
+    {
         $emptyModel = array_fill_keys(static::getFields(), null);
 
         // fill all defined fields of the model, while discarding the undefined keys.
