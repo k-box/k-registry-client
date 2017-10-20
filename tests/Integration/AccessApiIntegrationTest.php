@@ -2,17 +2,16 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use OneOffTech\KLinkRegistryClient\Client;
 use OneOffTech\KLinkRegistryClient\Model\Application;
-
+use Tests\TestCase;
 
 /**
  * @group integration
+ * @coversNothing
  */
 class AccessApiIntegrationTest extends TestCase
 {
-
     /**
      * @var AccessApi
      */
@@ -46,12 +45,11 @@ class AccessApiIntegrationTest extends TestCase
 
         $this->assertTrue($hasPermission);
     }
-    
+
     public function test_application_dont_have_permission()
     {
         $hasPermission = $this->client->hasPermissions($this->appToken, $this->appUrl, ['something-that-is-unlikely-to-exists']);
 
         $this->assertFalse($hasPermission);
     }
-
 }
