@@ -17,6 +17,11 @@ use Http\Message\UriFactory;
 final class HttpClientConfigurator
 {
     /**
+     * Specify the API uri.
+     */
+    const API_URI = '/api/1.0';
+
+    /**
      * @var string
      */
     private $endpoint;
@@ -54,7 +59,7 @@ final class HttpClientConfigurator
         }
 
         $plugins = $this->prependPlugins;
-        $plugins[] = new Plugin\BaseUriPlugin($this->uriFactory->createUri($this->endpoint));
+        $plugins[] = new Plugin\BaseUriPlugin($this->uriFactory->createUri($this->endpoint.self::API_URI));
         $plugins[] = new Plugin\HeaderDefaultsPlugin([
             'User-Agent' => sprintf('KLinkRegistry Client v%s', ApiClient::VERSION),
         ]);

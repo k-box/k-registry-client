@@ -38,8 +38,9 @@ composer require oneofftech/k-link-registry-client
 
 require_once 'vendor/autoload.php';
 
-# No trailing shash for the KRegistry edpoint
-$endpoint = 'https://test.klink.asia/kregistry/api/1.0';
+// No trailing slash for the KRegistry endpoint
+// Specify the URL without the `/api/x.y` part.
+$endpoint = 'https://test.klink.asia/kregistry';
 
 $configurator = (new HttpClientConfigurator())->setEndpoint($endpoint);
 $apiClient = ApiClient::fromConfigurator($configurator);
