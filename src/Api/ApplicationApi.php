@@ -7,21 +7,20 @@ use OneOffTech\KLinkRegistryClient\Exception\HydrationException;
 use OneOffTech\KLinkRegistryClient\Exception\InvalidArgumentException;
 use OneOffTech\KLinkRegistryClient\Model\Application;
 
-final class AccessApi extends HttpApi
+final class ApplicationApi extends HttpApi
 {
-    const ACCESS_ACTION = 'application.authenticate';
+    // The Endpoint is invalid, but that's a fault from the API endpoint itself!
+    const GET_APPLICATION = '/application.authenticate';
 
     /**
-     * @param string $secret
-     * @param string $appUrl
-     * @param array  $permissions
+     * @param string      $secret
+     * @param string      $appUrl
+     * @param array       $permissions
+     * @param string|null $requestId   the request ID, if null a random ID will be generated
      *
-     * @throws OneOffTech\KLinkRegistryClient\Exception\InvalidArgumentException         if $secret or $appUrl are empty strings
-     * @throws OneOffTech\KLinkRegistryClient\Exception\ApplicationVerificationException if the application don't exists or the permissions are not supported by the application
-     *
-     * @return Application
+     * @return Application If $secret or $appUrl are empty strings
      */
-    public function getApplication(string $secret, string $appUrl, array $permissions = [])
+    public function getApplication(string $secret, string $appUrl, array $permissions = [], string $requestId = null)
     {
         if (empty($appUrl) || empty($secret)) {
             throw new InvalidArgumentException(
@@ -29,11 +28,11 @@ final class AccessApi extends HttpApi
             );
         }
 
-        $response = $this->httpPost($this->url(self::ACCESS_ACTION), [
+        $response = $this->httpRpcPost(self::GET_APPLICATION, [
             'app_url' => $appUrl,
             'permissions' => $permissions,
             'app_secret' => $secret,
-        ]);
+        ], $requestId);
 
         if (200 !== $response->getStatusCode()) {
             throw new ApplicationVerificationException('Application cannot be verified. Please check secret and permissions');
@@ -47,16 +46,19 @@ final class AccessApi extends HttpApi
     }
 
     /**
-     * @param string $appUrl
-     * @param array  $permissions
-     * @param string $secret
+     * @deprecated
+     *
+     * @param string      $secret
+     * @param string      $appUrl
+     * @param array       $permissions
+     * @param string|null $requestId
      *
      * @return bool
      */
-    public function hasPermissions(string $secret, string $appUrl, array $permissions)
+    public function hasPermissions(string $secret, string $appUrl, array $permissions, string $requestId = null)
     {
         try {
-            $appInfo = $this->getApplication($secret, $appUrl, $permissions);
+            $appInfo = $this->getApplication($secret, $appUrl, $permissions, $requestId);
 
             return true;
         } catch (ApplicationVerificationException $ex) {

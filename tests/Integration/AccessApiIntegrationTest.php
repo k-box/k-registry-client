@@ -1,10 +1,12 @@
 <?php
 
-namespace Tests\Unit;
+namespace OneOffTech\KLinkRegistryClient\Tests\Unit;
 
-use OneOffTech\KLinkRegistryClient\Client;
+use OneOffTech\KLinkRegistryClient\Api\ApplicationApi;
+use OneOffTech\KLinkRegistryClient\ApiClient;
+use OneOffTech\KLinkRegistryClient\HttpClientConfigurator;
 use OneOffTech\KLinkRegistryClient\Model\Application;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group integration
@@ -12,43 +14,54 @@ use Tests\TestCase;
  */
 class AccessApiIntegrationTest extends TestCase
 {
-    /**
-     * @var AccessApi
-     */
-    private $client;
+    /** @var ApplicationApi */
+    private $applicationApi;
+
+    /** @var string */
+    private $appToken;
+
+    /** @var string */
+    private $appUrl;
+
+    /** @var array */
+    private $appPermissions;
 
     public function setUp()
     {
-        parent::setUp();
+        $configurator = new HttpClientConfigurator();
+        $configurator->setEndpoint(getenv('REGISTRY_URL'));
 
-        $this->client = (new Client(getenv('REGISTRY_URL')))->access();
+        $this->applicationApi = ApiClient::fromConfigurator($configurator)->application();
 
         $this->appToken = getenv('APP_TOKEN');
         $this->appUrl = getenv('APP_URL');
         $this->appPermissions = explode(',', getenv('APP_PERMISSIONS'));
     }
 
-    public function test_get_application()
+    public function testGetApplication()
     {
-        $application = $this->client->getApplication($this->appToken, $this->appUrl, $this->appPermissions);
+        $application = $this->applicationApi->getApplication($this->appToken, $this->appUrl, $this->appPermissions);
 
         $this->assertInstanceOf(Application::class, $application);
 
-        $this->assertNotEmpty($application->getApplicationId());
+        $this->assertNotEmpty($application->getAppId());
         $this->assertNotEmpty($application->getName());
-        $this->assertNotEmpty($application->getAppDomain());
     }
 
-    public function test_application_has_permission()
+    public function testApplicationHasPermission()
     {
-        $hasPermission = $this->client->hasPermissions($this->appToken, $this->appUrl, $this->appPermissions);
+        $hasPermission = $this->applicationApi->hasPermissions($this->appToken, $this->appUrl, $this->appPermissions);
 
         $this->assertTrue($hasPermission);
     }
 
-    public function test_application_dont_have_permission()
+    public function testApplicationDontHavePermission()
     {
-        $hasPermission = $this->client->hasPermissions($this->appToken, $this->appUrl, ['something-that-is-unlikely-to-exists']);
+        $hasPermission = $this->applicationApi->hasPermissions(
+            $this->appToken,
+            $this->appUrl,
+            ['something-that-is-unlikely-to-exists']
+        );
 
         $this->assertFalse($hasPermission);
     }

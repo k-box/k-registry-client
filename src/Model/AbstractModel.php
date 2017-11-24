@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace OneOffTech\KLinkRegistryClient\Model;
 
-/*
- * A base model that is extended by all other models
+/**
+ * A base model that is extended by all other models.
  */
-abstract class Model implements CreatableFromArray
+abstract class AbstractModel implements CreatableFromArray
 {
     /**
      * Contains the information of the Model.
@@ -26,19 +26,16 @@ abstract class Model implements CreatableFromArray
         $this->data = $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function createFromArray(array $data)
     {
         $emptyModel = array_fill_keys(static::getFields(), null);
 
-        // fill all defined fields of the model, while discarding the undefined keys.
+        // Fill all defined fields of the model, while discarding the undefined keys.
         $data = array_merge($emptyModel, array_intersect_key($data, $emptyModel));
 
         return new static($data);
     }
 
-    // allows subclasses to define allowed fields
+    // Allows subclasses to define allowed fields
     abstract protected static function getFields();
 }
