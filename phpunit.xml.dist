@@ -27,6 +27,6 @@
         </whitelist>
     </filter>
     <php>
-        <env name="REGISTRY_URL" value="http://localhost:8000/registry/"/>
+        <env name="REGISTRY_URL" value="http://localhost:8000/registry"/>
     </php>
 </phpunit>

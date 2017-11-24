@@ -7,7 +7,7 @@ namespace OneOffTech\KLinkRegistryClient\Model;
 /*
  * Error is the Error Response of the API
  */
-final class Error extends Model
+final class Error extends AbstractModel
 {
     public function getStatusCode(): string
     {

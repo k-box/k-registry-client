@@ -7,7 +7,7 @@ namespace OneOffTech\KLinkRegistryClient\Model;
  *
  * Class Application
  */
-class Application extends Model
+class Application extends AbstractModel
 {
     /**
      * @return int

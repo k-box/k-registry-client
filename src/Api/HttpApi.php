@@ -5,13 +5,10 @@ namespace OneOffTech\KLinkRegistryClient\Api;
 use Http\Client\HttpClient;
 use Http\Message\MessageFactory;
 use OneOffTech\KLinkRegistryClient\Hydrator\Hydrator;
-use OneOffTech\KLinkRegistryClient\Hydrator\ModelHydrator;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class HttpApi
 {
-    use Concerns\GeneratesUrl;
-
     /**
      * @var HttpClient
      */
@@ -22,68 +19,39 @@ abstract class HttpApi
      */
     protected $messageFactory;
 
-    /*
+    /**
      * @var Hydrator
      */
     protected $hydrator;
 
-    /**
-     * HttpApi constructor.
-     *
-     * @param HttpClient     $httpClient
-     * @param MessageFactory $messageFactory
-     * @param Hydrator|null  $hydrator
-     */
     public function __construct(
-        string $url,
         HttpClient $httpClient,
         MessageFactory $messageFactory,
-        Hydrator $hydrator = null
+        Hydrator $hydrator
     ) {
         $this->httpClient = $httpClient;
         $this->messageFactory = $messageFactory;
-        $this->hydrator = $hydrator ?: new ModelHydrator();
-        $this->setBaseUrl($url);
+        $this->hydrator = $hydrator;
     }
 
     /**
-     * Send a GET request with the parameters.
+     * Send a JSON RPC request via POST.
      *
-     * @param string $path
-     * @param array  $params
-     * @param array  $requestHeaders
-     *
-     * @return ResponseInterface
-     */
-    protected function httpGet(
-        string $path,
-        array $params = [],
-        array $requestHeaders = []
-    ): ResponseInterface {
-        return $this->httpClient->sendRequest(
-            $this->messageFactory->createRequest('GET', $path, $requestHeaders)
-        );
-    }
-
-    /**
-     * Send a POST request with a JSON-encoded body.
-     *
-     * @param string $path
-     * @param array  $params
-     * @param array  $pathParams
-     * @param array  $requestHeaders
+     * @param string      $path
+     * @param array       $params
+     * @param string|null $requestId the RequestId to send, if null it will be auto-generated
      *
      * @return ResponseInterface
      */
-    protected function httpPost(
+    protected function httpRpcPost(
         string $path,
         array $params = [],
-        array $requestHeaders = []
+        string $requestId = null
     ): ResponseInterface {
-        $body = $this->createJsonBody($params);
+        $body = $this->createJsonRpcBody($params, $requestId);
 
         return $this->httpClient->sendRequest(
-            $this->messageFactory->createRequest('POST', $path, $requestHeaders, $body)
+            $this->messageFactory->createRequest('POST', $path, [], $body)
         );
     }
 
@@ -92,19 +60,21 @@ abstract class HttpApi
      *
      * @return string
      */
-    private function timestampId()
+    private function generateRequestId()
     {
-        return number_format(microtime(true) * 10000, 0, '.', '');
+        // We must use a numeric value here, nothing fancy as 'kregistryclient-%d' due to a bug in the KRegistry API
+        return sprintf('%d', microtime(true) * 10000);
     }
 
     /**
      * Creates a json encoded request body from the supplied parameters.
      *
-     * @param array $params
+     * @param array       $params
+     * @param string|null $requestId the RequestId to send, if null it will be auto-generated
      *
      * @return null|string
      */
-    private function createJsonBody(array $params)
+    private function createJsonRpcBody(array $params, string $requestId = null)
     {
         if (0 === count($params)) {
             return null;
@@ -112,7 +82,10 @@ abstract class HttpApi
 
         // Prepare JRPC request, use timestamp as an ID (so that we can
         // later debug access times)
-        $payload = ['id' => $this->timestampId(), 'params' => $params];
+        $payload = [
+            'id' => $requestId ?? $this->generateRequestId(),
+            'params' => $params,
+        ];
 
         return json_encode($payload, empty($payload) ? JSON_FORCE_OBJECT : 0);
     }

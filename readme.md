@@ -1,4 +1,4 @@
-# K Registry client
+# K-Link Registry client
 
 ## Installation
 
@@ -36,33 +36,28 @@ composer require oneofftech/k-link-registry-client
 ```php
 <?php
 
-use OneOffTech\KLinkRegistryClient\Client;
+require_once 'vendor/autoload.php';
 
-$registry_url = "https://test.klink.asia/kregistry/";
+// No trailing slash for the KRegistry endpoint
+// Specify the URL without the `/api/x.y` part.
+$endpoint = 'https://test.klink.asia/kregistry';
 
-// Grabbing the access API client
-$accessApi = (new Client($registry_url))->access();
+$configurator = (new HttpClientConfigurator())->setEndpoint($endpoint);
+$apiClient = ApiClient::fromConfigurator($configurator);
 
-// Permission check only
-if ($accessApi->hasPermission($appToken, $appUrl, ["data-search"])) {
-    // ... ;
-}
+try {
+    $application = $apiClient->application()->getApplication('appSecret', 'appUrl');
+    var_dump($application->getEmail());
+    var_dump($application->getPermissions());
 
-// Verify that the application exists and grab the application details.
-// empty permission array means that we want to fetch the application,
-// regardless of the permissions.
-$app = $accessApi->getApplication($appToken, $appUrl, []);
+```
 
-// now we can check on permissions of the application object:
-if ($app->hasPermission("data-add")) {
-    // ... ;
-}
+To check if an application has a specific permission, use the `Application::hasPermission(string)` call
+on the Model returned by the `->getApplication(..)` call.
 
-if ($app->hasPermission("data-search")) {
-    // ... ;
-}
+```php
+<?php
+    $application = $apiClient->application()->getApplication('appSecret', 'appUrl');
+    var_dump($application->hasPermission('data-add'));
 
-// or we can get individual properties:
-
-var_dump($app->getName());
 ```

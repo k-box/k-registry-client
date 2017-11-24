@@ -1,82 +1,178 @@
 <?php
 
-namespace Tests\Unit;
+namespace OneOffTech\KLinkRegistryClient\Tests\Unit;
 
-use Http\Discovery\MessageFactoryDiscovery;
-use OneOffTech\KLinkRegistryClient\Api\AccessApi;
+use OneOffTech\KLinkRegistryClient\Api\ApplicationApi;
+use OneOffTech\KLinkRegistryClient\Exception\ApplicationVerificationException;
+use OneOffTech\KLinkRegistryClient\Exception\HydrationException;
 use OneOffTech\KLinkRegistryClient\Exception\InvalidArgumentException;
-use OneOffTech\KLinkRegistryClient\Hydrator\ModelHydrator;
 use OneOffTech\KLinkRegistryClient\Model\Application;
-use Tests\BaseApiTestCase;
 
 /**
  * Class ApplicationsTest.
  *
- * @covers \OneOffTech\KLinkRegistryClient\Api\AccessApi
+ * @covers \OneOffTech\KLinkRegistryClient\Api\ApplicationApi
  */
-class AccessApiTest extends BaseApiTestCase
+class AccessApiTest extends BaseHttpApiTest
 {
     /**
-     * @var AccessApi
+     * @var ApplicationApi
      */
     private $client;
 
     public function setUp()
     {
         parent::setUp();
-
-        $this->client = new AccessApi(getenv('REGISTRY_URL'), $this->httpClient, MessageFactoryDiscovery::find(), new ModelHydrator());
+        $this->client = new ApplicationApi($this->httpClient, $this->messageFactory, $this->hydrator);
     }
 
-    public function test_invalid_argument_thrown_for_empty_token()
+    public function testGetApplication()
     {
+        $secret = 'secret';
+        $appUrl = 'http://example.com/app/url';
+
+        $this->configureMessage('POST', '/application.authenticate', json_encode([
+            'id' => 'response-id',
+            'params' => [
+                'app_url' => $appUrl,
+                'permissions' => [],
+                'app_secret' => $secret,
+            ],
+        ]));
+        $this->configureRequestAndResponse(200);
+        $application = Application::createFromArray([
+            'name' => 'Test Application',
+            'app_url' => 'http://example.com/app/url',
+            'app_id' => 1,
+            'permissions' => ['PERMISSION-1'],
+            'email' => 'email@example.com',
+        ]);
+        $this->configureHydrator(Application::class, $application);
+
+        $retApplication = $this->client->getApplication($secret, $appUrl, [], 'response-id');
+        $this->assertSame($application->getName(), $retApplication->getName());
+        $this->assertSame($application->getEmail(), $retApplication->getEmail());
+        $this->assertSame($application->getAppId(), $retApplication->getAppId());
+        $this->assertSame($application->getAppUrl(), $retApplication->getAppUrl());
+    }
+
+    public function testGetApplicationWithEmptyAppUrl()
+    {
+        $secret = 'secret';
+        $appUrl = '';
+
         $this->expectException(InvalidArgumentException::class);
-        $this->client->getApplication('', 'APP_URL', ['PERMISSION-1']);
+        $this->client->getApplication($secret, $appUrl);
     }
 
-    public function test_invalid_argument_thrown_for_empty_app_url()
+    public function testGetApplicationWithEmptySecret()
     {
+        $secret = '';
+        $appUrl = 'http://example.com/app/url';
+
         $this->expectException(InvalidArgumentException::class);
-        $application = $this->client->getApplication('APP_TOKEN', '', ['PERMISSION-1']);
+        $this->client->getApplication($secret, $appUrl);
     }
 
-    public function test_get_application()
+    public function testGetApplicationWithEmptyAppUrlAndSecret()
     {
-        $appUrl = 'https://localhost';
+        $secret = '';
+        $appUrl = '';
 
-        $this->configureRequestAndResponse(200,
-        '{"id":"0","result":{"name":"Test Application","app_url":"https:\/\/localhost","app_id":1,"permissions":["PERMISSION-1"],"email":"admin@oneofftech.xyz"}}'
-        );
-
-        $application = $this->client->getApplication('TOKEN', $appUrl, ['PERMISSION-1']);
-
-        $this->assertInstanceOf(Application::class, $application);
-
-        $this->assertSame(1, $application->getAppId());
-        $this->assertSame('Test Application', $application->getName());
-        $this->assertSame($appUrl, $application->getAppUrl());
-        $this->assertSame('admin@oneofftech.xyz', $application->getEmail());
+        $this->expectException(InvalidArgumentException::class);
+        $this->client->getApplication($secret, $appUrl);
     }
 
-    public function test_application_has_permissions()
+    public function testGetApplicationWithNon200Response()
     {
-        $this->configureRequestAndResponse(200,
-            '{"id":"0","result":{"name":"Test Application","app_url":"https:\/\/localhost","app_id":1,"permissions":["PERMISSION-1", "PERMISSION-2"],"email":"admin@oneofftech.xyz"}}'
-        );
+        $secret = 'secret';
+        $appUrl = 'http://example.com/app/url';
 
-        $hasPermissions = $this->client->hasPermissions('TOKEN', 'http://localhost', ['PERMISSION-2']);
+        $this->configureMessage('POST', '/application.authenticate', json_encode([
+            'id' => 'response-id',
+            'params' => [
+                'app_url' => $appUrl,
+                'permissions' => [],
+                'app_secret' => $secret,
+            ],
+        ]));
 
-        $this->assertTrue($hasPermissions);
+        $this->configureRequestAndResponse(500);
+
+        $this->expectException(ApplicationVerificationException::class);
+        $this->expectExceptionMessage('Application cannot be verified. Please check secret and permissions');
+        $this->client->getApplication($secret, $appUrl, [], 'response-id');
     }
 
-    public function test_application_dont_have_permissions()
+    public function testGetApplicationWithHydratorError()
     {
-        $this->configureRequestAndResponse(400,
-            '{"id":"0","result":{"name":"Test Application","app_url":"https:\/\/localhost","app_id":1,"permissions":["PERMISSION-1", "PERMISSION-2"],"email":"admin@oneofftech.xyz"}}'
-        );
+        $secret = 'secret';
+        $appUrl = 'http://example.com/app/url';
 
-        $hasPermissions = $this->client->hasPermissions('TOKEN', 'http://localhost', ['PERMISSION-3']);
+        $this->configureMessage('POST', '/application.authenticate', json_encode([
+            'id' => 'response-id',
+            'params' => [
+                'app_url' => $appUrl,
+                'permissions' => [],
+                'app_secret' => $secret,
+            ],
+        ]));
+        $this->configureRequestAndResponse(200);
+        $this->hydrator->expects($this->once())
+            ->method('hydrate')
+            ->willThrowException(new HydrationException());
 
-        $this->assertFalse($hasPermissions);
+        $this->expectException(ApplicationVerificationException::class);
+        $this->expectExceptionMessage('Application cannot be verified. Unexpected response from the server');
+
+        $this->client->getApplication($secret, $appUrl, [], 'response-id');
+    }
+
+    public function testHasPermission()
+    {
+        $secret = 'secret';
+        $appUrl = 'http://example.com/app/url';
+
+        $this->configureMessage('POST', '/application.authenticate', json_encode([
+            'id' => 'response-id',
+            'params' => [
+                'app_url' => $appUrl,
+                'permissions' => ['PERM-1'],
+                'app_secret' => $secret,
+            ],
+        ]));
+        $this->configureRequestAndResponse(200);
+        $application = Application::createFromArray([
+            'name' => 'Test Application',
+            'app_url' => 'http://example.com/app/url',
+            'app_id' => 1,
+            'permissions' => ['PERM-1'],
+            'email' => 'email@example.com',
+        ]);
+        $this->configureHydrator(Application::class, $application);
+
+        $ret = $this->client->hasPermissions($secret, $appUrl, ['PERM-1'], 'response-id');
+
+        $this->assertTrue($ret);
+    }
+
+    public function testHasPermissionFalse()
+    {
+        $secret = 'secret';
+        $appUrl = 'http://example.com/app/url';
+
+        $this->configureMessage('POST', '/application.authenticate', json_encode([
+            'id' => 'response-id',
+            'params' => [
+                'app_url' => $appUrl,
+                'permissions' => ['PERM-2'],
+                'app_secret' => $secret,
+            ],
+        ]));
+        $this->configureRequestAndResponse(400);
+
+        $ret = $this->client->hasPermissions($secret, $appUrl, ['PERM-2'], 'response-id');
+
+        $this->assertFalse($ret);
     }
 }
