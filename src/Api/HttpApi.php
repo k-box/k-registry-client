@@ -72,11 +72,11 @@ abstract class HttpApi
      * @param array       $params
      * @param string|null $requestId the RequestId to send, if null it will be auto-generated
      *
-     * @return null|string
+     * @return string|null
      */
     private function createJsonRpcBody(array $params, string $requestId = null)
     {
-        if (0 === count($params)) {
+        if (0 === \count($params)) {
             return null;
         }
 

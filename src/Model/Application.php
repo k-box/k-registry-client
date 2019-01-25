@@ -61,7 +61,7 @@ class Application extends AbstractModel
     {
         $perms = $this->getPermissions();
 
-        if (in_array($permission, $perms, true)) {
+        if (\in_array($permission, $perms, true)) {
             return true;
         }
 
