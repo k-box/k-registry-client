@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/k-box/k-registry-client.svg?branch=master)](https://travis-ci.org/k-box/k-registry-client)
+
 # K-Link Registry client
 
 ## Installation

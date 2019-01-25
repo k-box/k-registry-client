@@ -1,0 +1,26 @@
+language: php
+
+php:
+  - 7.1
+
+branches:
+  only:
+  - master
+  - develop
+  - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+
+cache:
+  directories:
+  - .composer-cache
+
+install:
+  - export COMPOSER_CACHE_DIR=`pwd`/.composer-cache
+  - travis_retry composer install --prefer-dist --no-interaction
+
+script: 
+  - scripts/run_phpcs.sh
+  - scripts/run_phpunit.sh
+
+notifications:
+  email:
+    on_success: never
