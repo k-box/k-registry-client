@@ -8,18 +8,6 @@ cache:
   paths:
   - .composer-cache/
 
-unit_test_7.0:
-  stage: test
-  image: "docker.klink.asia/main/docker-php:7.0"
-  script:
-    - export COMPOSER_CACHE_DIR=`pwd`/.composer-cache
-    - php -v
-    - composer install --prefer-dist
-    - scripts/run_phpcs.sh
-    - scripts/run_phpunit.sh
-  tags:
-    - docker
-
 unit_test_7.1:
   stage: test
   image: "docker.klink.asia/main/docker-php:7.1"

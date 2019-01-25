@@ -5,7 +5,7 @@
   "keywords": ["oneofftech", "k-search", "k-registry"],
   "license": "AGPL-3.0-only",
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.1",
     "php-http/httplug": "^1.0",
     "php-http/client-common": "^1.1",
     "php-http/discovery": "^1.0",
