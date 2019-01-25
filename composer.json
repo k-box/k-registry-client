@@ -3,7 +3,7 @@
   "type": "library",
   "description": "Client library for K-Registry API",
   "keywords": ["oneofftech", "k-search", "k-registry"],
-  "license": "AGPL-3.0",
+  "license": "AGPL-3.0-only",
   "require": {
     "php": ">=7.0",
     "php-http/httplug": "^1.0",
