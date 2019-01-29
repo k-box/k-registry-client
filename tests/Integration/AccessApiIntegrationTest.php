@@ -6,6 +6,7 @@ use OneOffTech\KLinkRegistryClient\Api\ApplicationApi;
 use OneOffTech\KLinkRegistryClient\ApiClient;
 use OneOffTech\KLinkRegistryClient\HttpClientConfigurator;
 use OneOffTech\KLinkRegistryClient\Model\Application;
+use OneOffTech\KLinkRegistryClient\Model\Klink;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -46,6 +47,8 @@ class AccessApiIntegrationTest extends TestCase
 
         $this->assertNotEmpty($application->getAppId());
         $this->assertNotEmpty($application->getName());
+        $this->assertNotEmpty($application->getKlinks());
+        $this->assertContainsOnlyInstancesOf(Klink::class, $application->getKlinks());
     }
 
     public function testApplicationHasPermission()

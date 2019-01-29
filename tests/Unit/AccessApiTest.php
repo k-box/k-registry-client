@@ -175,4 +175,33 @@ class AccessApiTest extends BaseHttpApiTest
 
         $this->assertFalse($ret);
     }
+
+    public function testHandlesEmptyKlinks()
+    {
+        $secret = 'secret';
+        $appUrl = 'http://example.com/app/url';
+
+        $this->configureMessage('POST', '/application.authenticate', json_encode([
+            'id' => 'response-id',
+            'params' => [
+                'app_url' => $appUrl,
+                'permissions' => ['PERM-1'],
+                'app_secret' => $secret,
+            ],
+        ]));
+        $this->configureRequestAndResponse(200);
+        $application = Application::createFromArray([
+            'name' => 'Test Application',
+            'app_url' => 'http://example.com/app/url',
+            'app_id' => 1,
+            'permissions' => ['PERM-1'],
+            'email' => 'email@example.com',
+            'klinks' => null,
+        ]);
+        $this->configureHydrator(Application::class, $application);
+
+        $application = $this->client->getApplication($secret, $appUrl, ['PERM-1'], 'response-id');
+
+        $this->assertEmpty($application->getKlinks());
+    }
 }

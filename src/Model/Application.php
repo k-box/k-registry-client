@@ -9,6 +9,8 @@ namespace OneOffTech\KLinkRegistryClient\Model;
  */
 class Application extends AbstractModel
 {
+    private $klinks = null;
+
     /**
      * @return int
      */
@@ -47,6 +49,24 @@ class Application extends AbstractModel
     public function getPermissions()
     {
         return $this->data['permissions'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getKlinks()
+    {
+        if ($this->klinks) {
+            return $this->klinks;
+        }
+
+        if (isset($this->data['klinks']) && !empty($this->data['klinks'])) {
+            return $this->klinks = array_map(function ($k) {
+                return Klink::createFromArray($k);
+            }, $this->data['klinks']);
+        }
+
+        return $this->klinks = [];
     }
 
     /**
@@ -95,6 +115,6 @@ class Application extends AbstractModel
      */
     protected static function getFields()
     {
-        return ['name', 'app_url', 'app_id', 'permissions', 'email'];
+        return ['name', 'app_url', 'app_id', 'permissions', 'email', 'klinks'];
     }
 }
