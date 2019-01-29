@@ -1,0 +1,31 @@
+## Test environment
+## This docker compose starts the necessary services to run integration tests
+
+version: "3"
+
+networks:
+  internal:
+
+services:
+  database:
+    image: mariadb:10
+    environment:
+      MYSQL_ROOT_PASSWORD: "a-secure-root-password"
+      MYSQL_DATABASE: kregistry
+      MYSQL_USER: kregistry
+      MYSQL_PASSWORD: kregistry
+    networks:
+      - internal
+  registry:
+    image: "oneofftech/k-link-registry:${REGISTRY_TAG:-develop}"
+    environment:
+      REGISTRY_DB_HOST: "database"
+      REGISTRY_DB_PORT: 3306
+      REGISTRY_ADMIN_USERNAME: "${REGISTRY_TEST_USER:-admin@registry.local}"
+      REGISTRY_ADMIN_PASSWORD: "${REGISTRY_TEST_PASSWORD:-****}"
+    depends_on:
+      - database
+    ports:
+      - "8080:80"
+    networks:
+      - internal

@@ -27,6 +27,9 @@
         </whitelist>
     </filter>
     <php>
-        <env name="REGISTRY_URL" value="http://localhost:8000/registry"/>
+        <env name="REGISTRY_URL" value=""/>
+        <env name="APP_URL" value="http://localhost"/>
+        <env name="APP_TOKEN" value=""/>
+        <env name="APP_PERMISSIONS" value="data-search,data-view"/>
     </php>
 </phpunit>

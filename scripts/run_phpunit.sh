@@ -2,5 +2,5 @@
 
 set -e
 
-echo "** Running phpunit (exclude integration)"
-vendor/bin/phpunit --exclude-group integration
+echo "** Running phpunit"
+vendor/bin/phpunit

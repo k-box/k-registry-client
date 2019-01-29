@@ -1,5 +1,8 @@
 language: php
 
+services:
+  - docker
+
 php:
   - 7.1
 
@@ -9,6 +12,13 @@ branches:
   - develop
   - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
+
+env:
+  global:
+    - REGISTRY_TAG="develop"
+    - REGISTRY_TEST_USER="travis@registry.local"
+    - REGISTRY_TEST_PASSWORD="travis"
+
 cache:
   directories:
   - .composer-cache
@@ -17,9 +27,17 @@ install:
   - export COMPOSER_CACHE_DIR=`pwd`/.composer-cache
   - travis_retry composer install --prefer-dist --no-interaction
 
+before_script:
+  - sudo service mysql stop
+  - docker-compose -f ./tests/docker-compose.yml up -d
+  - php ./tests/prepare.php
+
 script: 
   - scripts/run_phpcs.sh
   - scripts/run_phpunit.sh
+
+after_script:
+  - docker-compose -f ./tests/docker-compose.yml down
 
 notifications:
   email:

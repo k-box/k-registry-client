@@ -29,6 +29,10 @@ class AccessApiIntegrationTest extends TestCase
 
     public function setUp()
     {
+        if (!getenv('REGISTRY_URL') && !getenv('APP_TOKEN')) {
+            $this->markTestSkipped('REGISTRY_URL or APP_TOKEN not configured for running integration tests.');
+        }
+
         $configurator = new HttpClientConfigurator();
         $configurator->setEndpoint(getenv('REGISTRY_URL'));
 
